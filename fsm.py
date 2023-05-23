@@ -116,6 +116,9 @@ class FSM:
             elif hour in self.__eating_time and re_chance < self.__res_probs['a']:
                 self._current_state = self._q3
                 print(f"It's {hour} o'clock. {self.__res['a']} happened. Currently I do: {self.__los[3]}")
+            elif hour in self.__studying_time:
+                self._current_state = self._q3
+                print(f"It's {hour} o'clock. Currently I do: {self.__los[3]}")
             else:
                 print(f"It's {hour} o'clock. Currently I do: {self.__los[1]}")
 
@@ -127,8 +130,6 @@ class FSM:
         """
         while True:
             hour = yield
-            re_chance = random.random()
-
             if hour in self.__studying_time:
                 self._current_state = self._q3
                 print(f"It's {hour} o'clock. Currently I do: {self.__los[3]}")
@@ -152,6 +153,8 @@ class FSM:
                 print(f"It's {hour} o'clock. {self.__res['a']} did not happen! Now I do: {self.__los[2]}")
             elif hour in self.__eating_time and re_chance < self.__res_probs["a"]:
                 print(f"It's {hour} o'clock. {self.__res['a']} happened! Currently I do: {self.__los[3]}")
+            else:
+                print(f"It's {hour} o'clock. Currently I do: {self.__los[3]}")
 
     @prime
     def _create_q4(self) -> None:
@@ -182,12 +185,18 @@ class FSM:
                 print(f"It's {hour} o'clock. The day is over!")
 
 
-def run(values):
+def run(values) -> None:
+    """
+    Run the FSM
+    :param values: list of hours
+    :return: None
+    """
     evaluator = FSM()
     for val in values:
         evaluator.send(val)
-        # sleep(1)
+        sleep(1)
 
 
-vals = [i for i in range(25)]
-run(vals)
+if __name__ == "__main__":
+    vals = [i for i in range(24)]
+    run(vals)
